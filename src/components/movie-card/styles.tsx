@@ -4,7 +4,6 @@ export const styles = StyleSheet.create({
   cardWrap: {
     width: 146,
     gap: 6,
-    backgroundColor: 'red',
   },
   imageWrap: {
     width: 146,

@@ -63,4 +63,15 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'red',
   },
+  backgroundVideo: {
+    // position: 'absolute',
+    // top: 0,
+    // left: 0,
+    // bottom: 0,
+    // right: 0,
+    backgroundColor:'pink',
+    zIndex:5,
+    width: screenWidth,
+    height: screenHeight 
+  },
 });

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "147572701575",
+    "firebase_url": "https://moviehub-api-default-rtdb.firebaseio.com",
+    "project_id": "moviehub-api",
+    "storage_bucket": "moviehub-api.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147572701575:android:817261a907899856adfb22",
+        "android_client_info": {
+          "package_name": "com.moviehub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaFlhrf_M8i3kJneEFlrWp0i0LdJXCYts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

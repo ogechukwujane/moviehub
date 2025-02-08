@@ -1,135 +1,118 @@
-import React, {useRef, useState} from 'react';
-import {Dimensions, Pressable, ScrollView, Text, View} from 'react-native';
-import {MovieCard} from '../../components';
+import React, {useMemo, useRef, useState} from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
+import {CategoryCard, MovieCard} from '../../components';
 import {styles} from './styles';
-import Carousel, {
-  AdditionalParallaxProps,
-  Pagination,
-} from 'react-native-snap-carousel';
-
-interface VideoItem {
-  id: string;
-  uri: string;
-}
-
-const ENTRIES1 = [
-  {
-    title: 'Beautiful and dramatic Antelope Canyon',
-    subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-    illustration: 'https://i.imgur.com/UYiroysl.jpg',
-  },
-  {
-    title: 'Earlier this morning, NYC',
-    subtitle: 'Lorem ipsum dolor sit amet',
-    illustration: 'https://i.imgur.com/UPrs1EWl.jpg',
-  },
-  {
-    title: 'White Pocket Sunset',
-    subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-    illustration: 'https://i.imgur.com/MABUbpDl.jpg',
-  },
-  {
-    title: 'Acrocorinth, Greece',
-    subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-    illustration: 'https://i.imgur.com/KZsmUi2l.jpg',
-  },
-  {
-    title: 'The lone tree, majestic landscape of New Zealand',
-    subtitle: 'Lorem ipsum dolor sit amet',
-    illustration: 'https://i.imgur.com/2nCt3Sbl.jpg',
-  },
-];
+import {useGetMoviesQuery} from '../../store/movie-api';
+import {getCategoryColors, groupMoviesByCategory} from '../../utils';
+import {VideoCard} from './video-card';
 
 export const HomeScreen = () => {
-  const carouselRef = useRef<Carousel<any>>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const {width: screenWidth} = Dimensions.get('window');
+  const {data, isLoading} = useGetMoviesQuery();
+  const flatListRef = useRef<FlatList<any>>(null);
+  const viewabilityConfig = {viewAreaCoveragePercentThreshold: 50};
 
-  const renderItem = (
-    item: {
-      item: (typeof ENTRIES1)[0];
-      index: number;
-    },
-    parallaxProps?: AdditionalParallaxProps,
-  ) => {
-    return <View style={styles.videoContainer}></View>;
-  };
+  const allMovies = useMemo(() => {
+    if (data && !isLoading) return groupMoviesByCategory(data);
+    return {};
+  }, [data, isLoading]);
+
+  const onViewableItemsChanged = useRef(({viewableItems}: any) => {
+    console.log('viewableItems', viewableItems);
+
+    if (viewableItems.length > 0) {
+      setCurrentIndex(viewableItems[0].index);
+    }
+  });
+
+  const safeData = Array.isArray(data) ? data : [];
+
+  console.log('isLoading',isLoading);
+  console.log('data',data);
+  
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <View style={styles.heroSecrion}>
-          <Carousel
-            ref={carouselRef}
-            sliderWidth={screenWidth}
-            sliderHeight={screenWidth}
-            itemWidth={screenWidth}
-            data={ENTRIES1}
-            renderItem={renderItem}
-            hasParallaxImages={true}
-            onSnapToItem={index => setCurrentIndex(index)}
-          />
-          <View style={styles.absoluteWrap}>
-            <View style={styles.flex}>
-              <View style={styles.categoryCard}>
-                <Text style={styles.categoryText}>New</Text>
-              </View>
-              <View style={styles.categoryCard}>
-                <Text style={styles.categoryText}>Detective</Text>
-              </View>
-              <View style={styles.categoryCard}>
-                <Text style={styles.categoryText}>Crime</Text>
-              </View>
-            </View>
-            <Pressable style={styles.playButton}>
-              <Text style={styles.buttonText}>Play</Text>
-            </Pressable>
-            <Pagination
-              dotsLength={ENTRIES1.length}
-              activeDotIndex={currentIndex}
-              containerStyle={styles.paginationContainer}
-              dotStyle={styles.paginationDot}
-              inactiveDotStyle={styles.inactiveDot}
-              inactiveDotOpacity={0.4}
-              inactiveDotScale={0.6}
+      {isLoading ? (
+        <ActivityIndicator size={40} color={'red'} />
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.heroSecrion}>
+            <FlatList
+              ref={flatListRef}
+              data={safeData}
+              keyExtractor={item => item.id}
+              horizontal
+              pagingEnabled
+              snapToAlignment="center"
+              decelerationRate="fast"
+              showsHorizontalScrollIndicator={false}
+              onViewableItemsChanged={onViewableItemsChanged.current}
+              viewabilityConfig={viewabilityConfig}
+              renderItem={({item, index}) =>
+                item ? (
+                  <VideoCard item={item} isPlaying={index === currentIndex} />
+                ) : null
+              }
+              scrollEventThrottle={16}
             />
-          </View>
-        </View>
-        <View>
-          <View style={styles.contentContainer}>
-            <View style={styles.cardGrid}>
-              <Text style={styles.title}>Home</Text>
-              <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-                <View style={styles.Grid}>
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-                    <MovieCard key={item} />
-                  ))}
-                </View>
-              </ScrollView>
-            </View>
-            <View style={styles.cardGrid}>
-              <Text style={styles.title}>Home</Text>
-              <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-                <View style={styles.Grid}>
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-                    <MovieCard key={item} />
-                  ))}
-                </View>
-              </ScrollView>
-            </View>
-            <View style={styles.cardGrid}>
-              <Text style={styles.title}>Home</Text>
-              <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-                <View style={styles.Grid}>
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-                    <MovieCard key={item} />
-                  ))}
-                </View>
-              </ScrollView>
+            <View style={styles.paginationContainer}>
+              {data?.map((_, index) => (
+                <View
+                  key={index}
+                  style={
+                    index === currentIndex
+                      ? styles.paginationDot
+                      : styles.inactiveDot
+                  }
+                />
+              ))}
             </View>
           </View>
+          <View>
+            <View style={styles.contentContainer}>
+              <View style={styles.cardGrid}>
+                <Text style={styles.title}>By Category</Text>
+                <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                  <View style={styles.Grid}>
+                    {Object.entries(allMovies ?? {}).map(
+                      ([category], index) => (
+                        <CategoryCard
+                          category={category}
+                          key={index}
+                          color={getCategoryColors(category)}
+                        />
+                      ),
+                    )}
+                  </View>
+                </ScrollView>
+              </View>
+              {Object.entries(allMovies ?? {}).map(
+                ([category, items], index) => (
+                  <View style={styles.cardGrid} key={index}>
+                    <Text style={styles.title}>{category}</Text>
+                    <ScrollView
+                      showsHorizontalScrollIndicator={false}
+                      horizontal>
+                      <View style={styles.Grid}>
+                        {items.map((item, index) => (
+                          <MovieCard key={index} item={item} />
+                        ))}
+                      </View>
+                    </ScrollView>
+                  </View>
+                ),
+              )}
+            </View>
+          </View>
         </View>
-      </View>
+      )}
     </ScrollView>
   );
 };

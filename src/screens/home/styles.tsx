@@ -8,14 +8,20 @@ export const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   videoContainer: {
-    width: '100%',
+    width: screenWidth,
     height: '100%',
     backgroundColor: 'blue',
+    position: 'relative',
+  },
+  backgroundVideo: {
+    backgroundColor: 'pink',
+    width: screenWidth,
+    height: screenHeight - 60,
   },
   heroSecrion: {
     width: screenWidth,
     height: screenHeight - 60,
-    position: 'relative',
+    backgroundColor: 'green',
   },
   contentContainer: {flexDirection: 'column', gap: 20},
   cardGrid: {
@@ -24,13 +30,14 @@ export const styles = StyleSheet.create({
   },
   Grid: {
     flexDirection: 'row',
-    gap: 6,
+    gap: 12,
     overflow: 'scroll',
   },
   title: {
     fontSize: 21,
     fontWeight: 600,
     color: '#fff',
+    textTransform: 'capitalize',
   },
   paragraph: {
     fontSize: 11,
@@ -53,20 +60,21 @@ export const styles = StyleSheet.create({
   },
   absoluteWrap: {
     position: 'absolute',
-    bottom: -15,
+    bottom: 30,
     right: 0,
     left: 0,
-    gap: 10,
+    gap: 15,
     flexDirection: 'column',
     justifyContent: 'center',
     alignContent: 'center',
+    zIndex: 1,
   },
   flex: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    bottom: -10,
+    bottom: 0,
   },
   categoryCard: {
     borderWidth: 1,
@@ -89,8 +97,7 @@ export const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    bottom: -20,
-    zIndex: 1,
+    bottom: 0,
   },
   buttonText: {
     fontSize: 17,
@@ -98,7 +105,14 @@ export const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
   },
-  paginationContainer: {},
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 10,
+    gap: 8,
+    width: '100%',
+  },
   paginationDot: {
     width: 16,
     height: 7,

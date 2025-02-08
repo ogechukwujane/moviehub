@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   playButton: {
     width: screenWidth / 2,
-    height: 44,
+    height: 40,
     borderRadius: 8,
     backgroundColor: '#F30745',
     alignContent: 'center',
@@ -63,15 +63,31 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'red',
   },
+  iconText: {
+    fontSize: 14,
+    fontWeight: 400,
+    color: '#fff',
+    textAlign: 'center',
+  },
   backgroundVideo: {
-    // position: 'absolute',
-    // top: 0,
-    // left: 0,
-    // bottom: 0,
-    // right: 0,
-    backgroundColor:'pink',
-    zIndex:5,
+    backgroundColor: 'pink',
     width: screenWidth,
-    height: screenHeight 
+    height: screenHeight,
+  },
+  progressContainer: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
+    height: 4,
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    borderRadius: 10,
+    marginHorizontal: 10,
+  },
+  progressBar: {
+    height: "100%",
+    backgroundColor: "#fff",
+    borderRadius: 10,
   },
 });
+

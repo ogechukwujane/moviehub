@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     height: 155,
     borderRadius: 8,
     overflow: 'hidden',
+    backgroundColor: '#ffffff60',
   },
   image: {
     width: '100%',

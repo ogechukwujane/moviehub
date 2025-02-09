@@ -4,13 +4,13 @@ export const styles = StyleSheet.create({
   cardWrap: {
     width: 146,
     gap: 6,
-    backgroundColor:'#ffffff60'
   },
   imageWrap: {
     width: 146,
     height: 220,
     borderRadius: 8,
     overflow: 'hidden',
+    backgroundColor: '#ffffff60',
   },
   image: {
     width: '100%',

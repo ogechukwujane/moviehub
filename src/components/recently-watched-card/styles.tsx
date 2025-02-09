@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
     gap: 6,
   },
   imageWrap: {
-    width: 146,
-    height: 220,
+    width: 116,
+    height: 155,
     borderRadius: 8,
     overflow: 'hidden',
   },
@@ -20,10 +20,5 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 600,
     color: '#fff',
-  },
-  paragraph: {
-    fontSize: 11,
-    fontWeight: 400,
-    color: '#ffffff60',
   },
 });

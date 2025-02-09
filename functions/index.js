@@ -14,7 +14,7 @@ exports.getMovies = functions.https.onRequest(async (req, res) => {
 
 exports.getMovieById = functions.https.onRequest(async (req, res) => {
   try {
-    const { id } = req.params; // Extract movie ID from URL parameters
+    const { id } = req.params;
     const movieDoc = await db.collection("movies").doc(id).get();
 
     if (!movieDoc.exists) {
@@ -29,18 +29,15 @@ exports.getMovieById = functions.https.onRequest(async (req, res) => {
 
 exports.updateMovie = functions.https.onRequest(async (req, res) => {
   try {
-    const { id } = req.params; // Get the movie ID from the URL
-    const updates = req.body; // Get the fields to update from request body
+    const { id } = req.params;
+    const updates = req.body; 
 
-    // Ensure that at least one field is provided
     if (!updates || Object.keys(updates).length === 0) {
       return res.status(400).json({ error: "No update fields provided." });
     }
 
-    // Get reference to the movie document
     const movieRef = admin.firestore().collection("movies").doc(id);
 
-    // Update only the provided fields
     await movieRef.update(updates);
 
     res.status(200).json({ message: "Movie updated successfully." });

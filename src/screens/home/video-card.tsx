@@ -1,7 +1,10 @@
 import {useEffect, useRef, useState} from 'react';
-import {Pressable, View, Text, Image} from 'react-native';
+import {Pressable, View, Text, Image, ActivityIndicator} from 'react-native';
 import Video, {VideoRef} from 'react-native-video';
 import {styles} from './styles';
+import {PlayIcon} from '../../../assets/svg';
+import {useNavigation} from '@react-navigation/native';
+import {INavSetting} from '../../navigation/type';
 
 export const VideoCard = ({
   item,
@@ -14,7 +17,8 @@ export const VideoCard = ({
   const [paused, setPaused] = useState(true);
   const [progress, setProgress] = useState(0);
   const [showImage, setShowImage] = useState(true);
-  const [playDuration, setPlayDuration] = useState(0);
+  const navigation = useNavigation<INavSetting>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let imageTimer: NodeJS.Timeout | null = null;
@@ -28,13 +32,13 @@ export const VideoCard = ({
         videoTimer = setTimeout(() => {
           setShowImage(true);
           setPaused(true);
-          videoRef.current?.seek(0); // Reset video position
+          videoRef.current?.seek(0);
         }, 30000);
       }, 3000);
     } else {
       setShowImage(true);
       setPaused(true);
-      videoRef.current?.seek(0); // Reset video when scrolled away
+      videoRef.current?.seek(0);
     }
 
     return () => {
@@ -43,7 +47,6 @@ export const VideoCard = ({
     };
   }, [isPlaying]);
 
-  // Handle progress for progress bar
   const handleProgress = (data: {
     currentTime: number;
     seekableDuration: number;
@@ -51,6 +54,13 @@ export const VideoCard = ({
     if (data.seekableDuration > 0) {
       setProgress((data.currentTime / data.seekableDuration) * 100);
     }
+  };
+
+  const onClickPlay = () => {
+    navigation.navigate('BottomStack', {
+      screen: 'ShortScreen',
+      params: {data: item, duration: progress},
+    });
   };
 
   return (
@@ -64,30 +74,37 @@ export const VideoCard = ({
       ) : (
         <Video
           ref={videoRef}
-          source={{uri: item?.video}}
+          source={{
+            uri: item?.video,
+          }}
           style={styles.backgroundVideo}
           resizeMode="cover"
-          muted={false}
-          repeat
-          paused={!isPlaying || paused}
-          ignoreSilentSwitch="ignore"
+          muted={true}
+          paused={!isPlaying || paused || showImage}
           onProgress={handleProgress}
           onLoad={() => videoRef.current?.seek(0)}
+          onBuffer={({isBuffering}) =>
+            isBuffering ? setLoading(true) : setLoading(false)
+          }
+        />
+      )}
+      {loading && (
+        <ActivityIndicator
+          style={styles.loader}
+          size={'large'}
+          color={'#fff'}
         />
       )}
       <View style={styles.absoluteWrap}>
         <View style={styles.flex}>
-          <View style={styles.categoryCard}>
-            <Text style={styles.categoryText}>New</Text>
-          </View>
-          <View style={styles.categoryCard}>
-            <Text style={styles.categoryText}>Detective</Text>
-          </View>
-          <View style={styles.categoryCard}>
-            <Text style={styles.categoryText}>Crime</Text>
-          </View>
+          {item.tags?.map((tag, index) => (
+            <View style={styles.categoryCard}>
+              <Text style={styles.categoryText}>{tag}</Text>
+            </View>
+          ))}
         </View>
-        <Pressable style={styles.playButton} onPress={() => setPaused(!paused)}>
+        <Pressable style={styles.playButton} onPress={onClickPlay}>
+          <PlayIcon />
           <Text style={styles.buttonText}>Play</Text>
         </Pressable>
       </View>

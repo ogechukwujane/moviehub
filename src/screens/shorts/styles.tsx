@@ -1,4 +1,4 @@
-import {Dimensions, Platform, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
@@ -9,9 +9,8 @@ export const styles = StyleSheet.create({
   },
   videoContainer: {
     width: screenWidth,
-    height: screenHeight - 60,
+    height: screenHeight - 50,
     position: 'relative',
-    backgroundColor: 'blue',
   },
   title: {
     fontSize: 16,
@@ -30,12 +29,16 @@ export const styles = StyleSheet.create({
     backgroundColor: '#F30745',
     alignContent: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    gap: 5,
+    flexDirection: 'row',
   },
   buttonText: {
     fontSize: 17,
     fontWeight: 700,
     color: '#fff',
     textAlign: 'center',
+    alignItems: 'center',
   },
   absoluteWrap: {
     position: 'absolute',
@@ -61,7 +64,6 @@ export const styles = StyleSheet.create({
     height: 36,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'red',
   },
   iconText: {
     fontSize: 14,
@@ -70,24 +72,26 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backgroundVideo: {
-    backgroundColor: 'pink',
     width: screenWidth,
     height: screenHeight,
   },
+  loader: {
+    position: 'absolute',
+    bottom: '50%',
+    left: 0,
+    right: 0,
+  },
   progressContainer: {
-    position: "absolute",
-    bottom: 10,
+    position: 'absolute',
+    bottom: 2,
     left: 0,
     right: 0,
     height: 4,
-    backgroundColor: "rgba(255, 255, 255, 0.3)",
-    borderRadius: 10,
-    marginHorizontal: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
   },
   progressBar: {
-    height: "100%",
-    backgroundColor: "#fff",
+    height: '100%',
+    backgroundColor: '#fff',
     borderRadius: 10,
   },
 });
-

@@ -10,20 +10,17 @@ export const styles = StyleSheet.create({
   videoContainer: {
     width: screenWidth,
     height: '100%',
-    backgroundColor: 'blue',
     position: 'relative',
   },
   backgroundVideo: {
-    backgroundColor: 'pink',
     width: screenWidth,
     height: screenHeight - 60,
   },
   heroSecrion: {
     width: screenWidth,
     height: screenHeight - 60,
-    backgroundColor: 'green',
   },
-  contentContainer: {flexDirection: 'column', gap: 20},
+  contentContainer: {flexDirection: 'column', gap: 40, paddingBottom: 20},
   cardGrid: {
     flexDirection: 'column',
     gap: 20,
@@ -32,12 +29,19 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
     overflow: 'scroll',
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 21,
     fontWeight: 600,
     color: '#fff',
     textTransform: 'capitalize',
+  },
+  flexbox: {
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
   paragraph: {
     fontSize: 11,
@@ -69,6 +73,12 @@ export const styles = StyleSheet.create({
     alignContent: 'center',
     zIndex: 1,
   },
+  loader: {
+    position: 'absolute',
+    bottom: '50%',
+    left: 0,
+    right: 0,
+  },
   flex: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -98,6 +108,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     bottom: 0,
+    alignItems: 'center',
+    gap: 5,
+    flexDirection: 'row',
   },
   buttonText: {
     fontSize: 17,

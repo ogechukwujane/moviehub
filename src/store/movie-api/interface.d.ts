@@ -9,11 +9,12 @@ interface IMovie {
   share: string;
   title: string;
   video: string;
+  tags: string[];
 }
 
 interface IUpdateMovie {
   favorite: string;
   likes: string;
   share: string;
-  id:string
+  id: string;
 }

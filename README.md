@@ -1,97 +1,62 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# ONEWAY
 
-# Getting Started
+This project was crafted using
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+- React Native cli, and
+- Typescript
 
-## Step 1: Start Metro
+## Installation:
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+To get the app running on your emulator, firstly
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- Clone the repository and navigate into the project directory,
 
-```sh
-# Using npm
-npm start
+  ```
+  cd project-directory-name
+  ```
 
-# OR using Yarn
-yarn start
-```
+- Run npm to install all dependency used,
 
-## Step 2: Build and run your app
+  ```
+  npm install
+  ```
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+- For MacBook users, Run the code below to install all dependency used on ios,
 
-### Android
+  ```
+  cd ios
+  pod install
+  cd ..
+  ```
 
-```sh
-# Using npm
-npm run android
+- To get the app running on your emulator, run any of the command below to open on ios emulator or an android emulator.
 
-# OR using Yarn
-yarn android
-```
+  ```
+  npm run start or
+  ```
 
-### iOS
+  ```
+  npx react-native run-android
+  ```
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+  ```
+  npx react-native run-ios
+  ```
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+The app is up and running.
 
-```sh
-bundle install
-```
+## Folder Structure:
 
-Then, and every time you update your native dependencies, run:
+All the working file of this app can be found in the `src` folder.
 
-```sh
-bundle exec pod install
-```
+- The `assets(folder)` which consist of Icon(file) and image(file), It can be found outside the `src(folder)`.
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+- The `component(folder)` which consist of all reusable component used around the app.
 
-```sh
-# Using npm
-npm run ios
+- The `navigation(folder)` which consist of the routing setup.
 
-# OR using Yarn
-yarn ios
-```
+- The `screens(folder)` which consist of all the screens of the app.
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+- The `store(folder)` which contains all the api configurations and setup.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- The `utils(folder)` which contains all reusable functions used on the app.

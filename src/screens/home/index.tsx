@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -8,77 +8,111 @@ import {
 } from 'react-native';
 import {CategoryCard, MovieCard} from '../../components';
 import {styles} from './styles';
-import {useGetMoviesQuery} from '../../store/movie-api';
+import {getMovies} from '../../store/movie-api';
 import {getCategoryColors, groupMoviesByCategory} from '../../utils';
 import {VideoCard} from './video-card';
+import {ChevronRightcon} from '../../../assets/svg';
+import {useFocusEffect} from '@react-navigation/native';
 
 export const HomeScreen = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const {data, isLoading} = useGetMoviesQuery();
   const flatListRef = useRef<FlatList<any>>(null);
   const viewabilityConfig = {viewAreaCoveragePercentThreshold: 50};
+  const [movieArray, setMovieArray] = useState<any[]>();
+  const [isScreenFocused, setIsScreenFocused] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsScreenFocused(true);
+      return () => setIsScreenFocused(false);
+    }, []),
+  );
+  useEffect(() => {
+    getMovies().then(res => setMovieArray(res));
+  }, []);
+
+  useEffect(() => {
+    getMovies().then(res => setMovieArray(res));
+  }, []);
 
   const allMovies = useMemo(() => {
-    if (data && !isLoading) return groupMoviesByCategory(data);
+    if (movieArray && movieArray?.length > 0)
+      return groupMoviesByCategory(movieArray);
     return {};
-  }, [data, isLoading]);
+  }, [movieArray]);
 
   const onViewableItemsChanged = useRef(({viewableItems}: any) => {
-    console.log('viewableItems', viewableItems);
-
     if (viewableItems.length > 0) {
       setCurrentIndex(viewableItems[0].index);
     }
   });
-
-  const safeData = Array.isArray(data) ? data : [];
-
-  console.log('isLoading',isLoading);
-  console.log('data',data);
-  
+  const viewabilityConfigCallbackPairs = useRef([
+    {onViewableItemsChanged: onViewableItemsChanged.current, viewabilityConfig},
+  ]);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {isLoading ? (
-        <ActivityIndicator size={40} color={'red'} />
+    <>
+      {!movieArray ? (
+        <ActivityIndicator size={40} color={'red'} style={styles.loader} />
       ) : (
-        <View style={styles.container}>
-          <View style={styles.heroSecrion}>
-            <FlatList
-              ref={flatListRef}
-              data={safeData}
-              keyExtractor={item => item.id}
-              horizontal
-              pagingEnabled
-              snapToAlignment="center"
-              decelerationRate="fast"
-              showsHorizontalScrollIndicator={false}
-              onViewableItemsChanged={onViewableItemsChanged.current}
-              viewabilityConfig={viewabilityConfig}
-              renderItem={({item, index}) =>
-                item ? (
-                  <VideoCard item={item} isPlaying={index === currentIndex} />
-                ) : null
-              }
-              scrollEventThrottle={16}
-            />
-            <View style={styles.paginationContainer}>
-              {data?.map((_, index) => (
-                <View
-                  key={index}
-                  style={
-                    index === currentIndex
-                      ? styles.paginationDot
-                      : styles.inactiveDot
-                  }
-                />
-              ))}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
+            <View style={styles.heroSecrion}>
+              <FlatList
+                ref={flatListRef}
+                data={movieArray.slice(0, 3)}
+                keyExtractor={item => item.id}
+                horizontal
+                pagingEnabled
+                snapToAlignment="center"
+                decelerationRate="fast"
+                showsHorizontalScrollIndicator={false}
+                viewabilityConfig={viewabilityConfig}
+                viewabilityConfigCallbackPairs={
+                  viewabilityConfigCallbackPairs.current
+                }
+                renderItem={({item, index}) =>
+                  item ? (
+                    <VideoCard
+                      item={item}
+                      isPlaying={isScreenFocused && index === currentIndex}
+                    />
+                  ) : null
+                }
+                scrollEventThrottle={16}
+              />
+              <View style={styles.paginationContainer}>
+                {movieArray.slice(0, 3)?.map((_, index) => (
+                  <View
+                    key={index}
+                    style={
+                      index === currentIndex
+                        ? styles.paginationDot
+                        : styles.inactiveDot
+                    }
+                  />
+                ))}
+              </View>
             </View>
-          </View>
-          <View>
             <View style={styles.contentContainer}>
               <View style={styles.cardGrid}>
-                <Text style={styles.title}>By Category</Text>
+                <View style={styles.flexbox}>
+                  <Text style={styles.title}>Most Trending</Text>
+                  <ChevronRightcon />
+                </View>
+                <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                  <View style={styles.Grid}>
+                    {movieArray.slice(0, 5)?.map((item, index) => (
+                      <MovieCard key={index} item={item} />
+                    ))}
+                  </View>
+                </ScrollView>
+              </View>
+              <View style={styles.cardGrid}>
+                <View style={styles.flexbox}>
+                  <Text style={styles.title}>By Category</Text>
+                  <ChevronRightcon />
+                </View>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal>
                   <View style={styles.Grid}>
                     {Object.entries(allMovies ?? {}).map(
@@ -96,7 +130,10 @@ export const HomeScreen = () => {
               {Object.entries(allMovies ?? {}).map(
                 ([category, items], index) => (
                   <View style={styles.cardGrid} key={index}>
-                    <Text style={styles.title}>{category}</Text>
+                    <View style={styles.flexbox}>
+                      <Text style={styles.title}>{category}</Text>
+                      <ChevronRightcon />
+                    </View>
                     <ScrollView
                       showsHorizontalScrollIndicator={false}
                       horizontal>
@@ -111,8 +148,8 @@ export const HomeScreen = () => {
               )}
             </View>
           </View>
-        </View>
+        </ScrollView>
       )}
-    </ScrollView>
+    </>
   );
 };

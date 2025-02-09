@@ -9,7 +9,7 @@ import {HomeIcon, ShortsIcon, RewardIcon, ProfileIcon} from '../../assets/svg';
 
 export type BottomTabParams = {
   HomeScreen: undefined;
-  ShortScreen: undefined;
+  ShortScreen: {data: IMovie; duration: number} | undefined;
   RewardScreen: undefined;
   ProfileScreen: undefined;
 };
